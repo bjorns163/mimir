@@ -890,7 +890,7 @@ func (o *Overrides) RulerTenantShardSize(userID string) int {
 func (o *Overrides) RulerMaxRulesPerRuleGroup(userID, namespace string) int {
 	u := o.getOverridesForUser(userID)
 
-	if namespaceLimit, ok := u.RulerMaxRulesPerRuleGroupByNamespace.data[namespace]; ok {
+	if namespaceLimit, ok := u.RulerMaxRulesPerRuleGroupByNamespace.Read()[namespace]; ok {
 		return namespaceLimit
 	}
 
@@ -906,7 +906,7 @@ func (o *Overrides) RulerMaxRulesPerRuleGroup(userID, namespace string) int {
 func (o *Overrides) RulerMaxRuleGroupsPerTenant(userID, namespace string) int {
 	u := o.getOverridesForUser(userID)
 
-	if namespaceLimit, ok := u.RulerMaxRuleGroupsPerTenantByNamespace.data[namespace]; ok {
+	if namespaceLimit, ok := u.RulerMaxRuleGroupsPerTenantByNamespace.Read()[namespace]; ok {
 		return namespaceLimit
 	}
 
@@ -982,7 +982,7 @@ func (o *Overrides) AlertmanagerReceiversBlockPrivateAddresses(user string) bool
 // 4. default limits
 func (o *Overrides) getNotificationLimitForUser(user, integration string) float64 {
 	u := o.getOverridesForUser(user)
-	if n, ok := u.NotificationRateLimitPerIntegration.data[integration]; ok {
+	if n, ok := u.NotificationRateLimitPerIntegration.Read()[integration]; ok {
 		return n
 	}
 
