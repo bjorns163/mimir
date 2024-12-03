@@ -47,14 +47,14 @@ func Test_CreateCleanupTracker(t *testing.T) {
 	expectedMetrics := `
 	# HELP cortex_discarded_attributed_samples_total The total number of samples that were discarded per attribution.
     # TYPE cortex_discarded_attributed_samples_total counter
-    cortex_discarded_attributed_samples_total{platform="foo",reason="sample-out-of-order", tenant="user4",tracker="custom_attribution"} 2
+    cortex_discarded_attributed_samples_total{platform="foo",reason="sample-out-of-order", tenant="user4",tracker="cost-attribution"} 2
     # HELP cortex_ingester_attributed_active_series The total number of active series per user and attribution.
     # TYPE cortex_ingester_attributed_active_series gauge
-	cortex_ingester_attributed_active_series{platform="bar",tenant="user4",tracker="custom_attribution"} 1
-    cortex_ingester_attributed_active_series{platform="foo",tenant="user4",tracker="custom_attribution"} 1
+	cortex_ingester_attributed_active_series{platform="bar",tenant="user4",tracker="cost-attribution"} 1
+    cortex_ingester_attributed_active_series{platform="foo",tenant="user4",tracker="cost-attribution"} 1
     # HELP cortex_received_attributed_samples_total The total number of samples that were received per attribution.
     # TYPE cortex_received_attributed_samples_total counter
-    cortex_received_attributed_samples_total{platform="foo",tenant="user4",tracker="custom_attribution"} 5
+    cortex_received_attributed_samples_total{platform="foo",tenant="user4",tracker="cost-attribution"} 5
 	`
 
 	metricNames := []string{
@@ -70,7 +70,7 @@ func Test_CreateCleanupTracker(t *testing.T) {
 	expectedMetrics = `
 	# HELP cortex_ingester_attributed_active_series The total number of active series per user and attribution.
     # TYPE cortex_ingester_attributed_active_series gauge
-	cortex_ingester_attributed_active_series{platform="bar",tenant="user4",tracker="custom_attribution"} 1
+	cortex_ingester_attributed_active_series{platform="bar",tenant="user4",tracker="cost-attribution"} 1
 	`
 	assert.NoError(t, testutil.GatherAndCompare(reg, strings.NewReader(expectedMetrics), metricNames...))
 

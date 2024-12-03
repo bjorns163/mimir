@@ -20,8 +20,9 @@ type Observation struct {
 }
 
 const (
-	TrackerLabel = "tracker"
-	TenantLabel  = "tenant"
+	TrackerLabel       = "tracker"
+	TenantLabel        = "tenant"
+	defaultTrackerName = "cost-attribution"
 )
 
 type Tracker struct {
@@ -61,19 +62,19 @@ func newTracker(userID string, trackedLabels []string, limit int, cooldown time.
 		discardedSampleAttribution: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Name:        "cortex_discarded_attributed_samples_total",
 			Help:        "The total number of samples that were discarded per attribution.",
-			ConstLabels: prometheus.Labels{TrackerLabel: "custom_attribution"},
+			ConstLabels: prometheus.Labels{TrackerLabel: defaultTrackerName},
 		}, append(trackedLabels, TenantLabel, "reason")),
 		//lint:ignore faillint the metrics are registered in the mimir package
 		receivedSamplesAttribution: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Name:        "cortex_received_attributed_samples_total",
 			Help:        "The total number of samples that were received per attribution.",
-			ConstLabels: prometheus.Labels{TrackerLabel: "custom_attribution"},
+			ConstLabels: prometheus.Labels{TrackerLabel: defaultTrackerName},
 		}, append(trackedLabels, TenantLabel)),
 		//lint:ignore faillint the metrics are registered in the mimir package
 		activeSeriesPerUserAttribution: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Name:        "cortex_ingester_attributed_active_series",
 			Help:        "The total number of active series per user and attribution.",
-			ConstLabels: prometheus.Labels{TrackerLabel: "custom_attribution"},
+			ConstLabels: prometheus.Labels{TrackerLabel: defaultTrackerName},
 		}, append(trackedLabels, TenantLabel)),
 		hashBuffer:                 make([]byte, 0, 1024),
 		cooldownDuration:           int64(cooldown.Seconds()),
